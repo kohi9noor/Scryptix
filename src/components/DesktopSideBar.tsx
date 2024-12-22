@@ -4,6 +4,7 @@ import {
   CoinsIcon,
   HomeIcon,
   Layers2Icon,
+  Sheet,
   ShieldCheckIcon,
 } from "lucide-react";
 import Logo from "./Logo";
@@ -71,7 +72,9 @@ const DesktopSideBar = ({}) => {
 export function MobileSidebar() {
   return (
     <div className=" block md:hidden border-separate bg-background">
-      mobile side bar
+      <nav className=" flex items-center justify-between px-8">
+        <Sheet></Sheet>
+      </nav>
     </div>
   );
 }
