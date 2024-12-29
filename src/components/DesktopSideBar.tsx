@@ -2,15 +2,18 @@
 
 import {
   CoinsIcon,
+  ShieldCheckIcon,
   HomeIcon,
   Layers2Icon,
-  Sheet,
-  ShieldCheckIcon,
+  MenuIcon,
 } from "lucide-react";
+
 import Logo from "./Logo";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { useParams, usePathname } from "next/navigation";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { useState } from "react";
 
 const routes = [
   {
@@ -70,10 +73,46 @@ const DesktopSideBar = ({}) => {
   );
 };
 export function MobileSidebar() {
+  const pathname = usePathname();
+  const activeRoute =
+    routes.find(
+      (routes) => routes.href.length > 0 && pathname.includes(routes.href)
+    ) || routes[0];
+
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className=" block md:hidden border-separate bg-background">
-      <nav className=" flex items-center justify-between px-8">
-        <Sheet></Sheet>
+      <nav className=" flex items-center justify-between mr-4">
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <MenuIcon />
+          </SheetTrigger>
+          <SheetContent
+            className=" w-[400px] sm:-[450px] space-y-4"
+            side={"left"}
+          >
+            <Logo />
+            <div className=" flex flex-col p-2 gap-1">
+              {routes.map((route) => (
+                <Link
+                  key={route.label}
+                  className={buttonVariants({
+                    variant:
+                      activeRoute.href == route.href
+                        ? "sidebarActiveItem"
+                        : "sidebarItem",
+                  })}
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  href={route.href}
+                >
+                  <route.icon size={20}></route.icon>
+                  {route.label}
+                </Link>
+              ))}
+            </div>
+          </SheetContent>
+        </Sheet>
       </nav>
     </div>
   );
