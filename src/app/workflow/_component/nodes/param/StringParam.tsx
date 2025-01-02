@@ -8,7 +8,7 @@ import { ParamProps } from "@/types/appNode";
 import internal from "stream";
 
 const StringParam = ({ param, value, updateNodeParamValue }: ParamProps) => {
-  const [internalValue, setInternalValue] = useState("");
+  const [internalValue, setInternalValue] = useState(value);
 
   const id = useId();
 
