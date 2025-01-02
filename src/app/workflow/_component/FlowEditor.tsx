@@ -14,6 +14,7 @@ import { TaskType } from "@/types/task";
 import NodeComponent from "./nodes/NodeComponent";
 
 const snapGrid: [number, number] = [50, 50];
+
 const fitViewOptions = { padding: 1 };
 
 const nodeTypes = {
@@ -24,6 +25,7 @@ const FlowEditor = ({ workflow }: { workflow: WorkFlow }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([
     CreateFlowNode(TaskType.LaunchBrowser),
   ]);
+
   const [edges, setEdges, onEdgesChange] = useNodesState([]);
 
   return (

@@ -8,16 +8,17 @@ import { NodeInput, NodeInputs } from "./NodeInputs";
 
 const NodeComponent = memo((props: NodeProps) => {
   const nodeData = props.data as AppNodeData;
+
   const task = TaskRegister[nodeData.type];
+
   console.log(task);
 
   return (
     <NodeCard isSelected={!!props.selected} nodeId={props.id}>
       <NodeHeader taskType={nodeData.type} />
-
       <NodeInputs>
         {task.inputs.map((input) => (
-          <NodeInput key={input.name} input={input} />
+          <NodeInput key={input.name} nodeId={props.id} input={input} />
         ))}
       </NodeInputs>
     </NodeCard>

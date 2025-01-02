@@ -3,13 +3,13 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TaskParam } from "@/types/task";
-import { useId } from "react";
+import { useId, useState } from "react";
+import { ParamProps } from "@/types/appNode";
+import internal from "stream";
 
-interface ParamProps {
-  param: TaskParam;
-}
+const StringParam = ({ param, value, updateNodeParamValue }: ParamProps) => {
+  const [internalValue, setInternalValue] = useState("");
 
-const StringParam = ({ param }: ParamProps) => {
   const id = useId();
 
   return (
@@ -18,7 +18,14 @@ const StringParam = ({ param }: ParamProps) => {
         {param.name}
         {param.required && <p className=" text-red-400 px-2">*</p>}
       </Label>
-      <Input id={id} placeholder={param.helperText} />
+      <Input
+        className=" text-xs"
+        id={id}
+        value={internalValue}
+        onChange={(e) => setInternalValue(e.target.value)}
+        placeholder={param.helperText}
+        onBlur={(e) => updateNodeParamValue(e.target.value)}
+      />
     </div>
   );
 };
