@@ -1,6 +1,6 @@
 export enum TaskType {
   LaunchBrowser = "LAUNCH_BROWSER",
-  PAGE_TO_HTMl = "PAGE_TO_HTMl",
+  PAGE_TO_HTML = "PAGE_TO_HTML",
 }
 
 export enum TaskParamsType {
@@ -13,7 +13,7 @@ export interface TaskParam {
   type: TaskParamsType;
   helperText?: string;
   required?: boolean;
-  hideHandle: boolean;
+  hideHandle?: boolean;
   value?: string;
   [key: string]: any;
 }
