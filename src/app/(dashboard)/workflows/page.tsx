@@ -39,7 +39,6 @@ function UserWorkFlowsSkeleton() {
 
 async function UserWorkFlows() {
   const workFlows = await getWorkFlowsForUser();
-  console.log(workFlows);
 
   if (!workFlows) {
     return (
@@ -55,7 +54,7 @@ async function UserWorkFlows() {
 
   if (workFlows.length === 0) {
     return (
-      <div className="flex flex-col gap-4 h-full items-center justify-center">
+      <div className="flex flex-col gap-4  items-center justify-center">
         <div className="rounded-full bg-accent w-20 h-20 flex items-center justify-center">
           <InboxIcon size={40} className="stroke-primary" />
         </div>
@@ -71,7 +70,7 @@ async function UserWorkFlows() {
   }
 
   return (
-    <div className=" grid grid-cols-1">
+    <div className="flex flex-wrap gap-2 h-full">
       {workFlows.map((workflow, index) => {
         return <WorkflowCard key={index} workflow={workflow} />;
       })}

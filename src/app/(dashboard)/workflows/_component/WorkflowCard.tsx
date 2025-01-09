@@ -28,16 +28,16 @@ import TooltipWrapper from "@/components/TooltipWrapper";
 import DeleteWorkflowDialog from "./DeleteWorkflowDialog";
 
 const statusColors = {
-  [WorkFlowStatus.DRAFT]: "bg-green-400 text-green-600",
+  [WorkFlowStatus.DRAFT]: "bg-black text-green-600",
   [WorkFlowStatus.PUBLISHED]: "bg-primary",
 };
 
 const WorkflowCard = ({ workflow }: { workflow: WorkFlow }) => {
   const isDraft = workflow.status === WorkFlowStatus.DRAFT;
   return (
-    <Card className=" border border-separate shadow-sm hover:shadow-md dark:shadow-primary/30 rounded-lg overflow-hidden">
+    <Card className=" border border-separate shadow-sm hover:shadow-md h-60 dark:shadow-primary/30 w-full sm:w-[390px] rounded-lg">
       <CardContent className="p-4 items-center flex justify-between h-[100px]">
-        <div className=" flex items-center gap-5">
+        <div className="flex items-center gap-5">
           <div
             className={cn(
               "w-10 h-10 rounded-full flex items-center bg-red-500 justify-center",
@@ -45,7 +45,7 @@ const WorkflowCard = ({ workflow }: { workflow: WorkFlow }) => {
             )}
           >
             {isDraft ? (
-              <FileTextIcon className=" h-5 w-5" />
+              <FileTextIcon className=" h-5 w-5" color="white" />
             ) : (
               <PlayIcon className=" w-5 h-5 text-white" />
             )}
@@ -73,7 +73,7 @@ const WorkflowCard = ({ workflow }: { workflow: WorkFlow }) => {
             href={`/workflow/editor/${workflow.id}`}
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              "flex items-center gap-2"
+              "flex items-center gap-2 text-xs"
             )}
           >
             <ShuffleIcon size={16} />

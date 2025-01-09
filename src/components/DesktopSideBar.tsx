@@ -14,6 +14,7 @@ import { buttonVariants } from "./ui/button";
 import { useParams, usePathname } from "next/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useState } from "react";
+import TooltipWrapper from "./TooltipWrapper";
 
 const routes = [
   {
@@ -45,14 +46,12 @@ const DesktopSideBar = ({}) => {
     ) || routes[0];
 
   return (
-    <div className=" hidden relative md:block min-w-[280px] h-screen overflow-hidden w-auto bg-primary/5 dark:bg-secondary/30 dark:text-foreground text-muted-foreground border-r-2 border-separate">
-      <div className=" flex items-center justify-center gap-2 border-b-[1px] border-separate p-4">
+    <div className=" hidden relative md:block min-w-[40px] h-screen overflow-hidden w-auto bg-primary/5 dark:bg-secondary/30 dark:text-foreground text-muted-foreground border-r-2 border-separate">
+      {/* <div className=" flex items-center justify-center gap-2 border-b-[1px] border-separate p-4">
         <Logo />
-      </div>
+      </div> */}
 
-      <div className=" p-2">TODO CREDITS</div>
-
-      <div className=" flex flex-col p-2 gap-1">
+      <div className=" flex py-4 px-2 flex-col items-center gap-1">
         {routes.map((route) => (
           <Link
             key={route.label}
@@ -64,8 +63,9 @@ const DesktopSideBar = ({}) => {
             })}
             href={route.href}
           >
-            <route.icon size={20}></route.icon>
-            {route.label}
+            <TooltipWrapper content={route.label}>
+              <route.icon size={30}></route.icon>
+            </TooltipWrapper>
           </Link>
         ))}
       </div>
