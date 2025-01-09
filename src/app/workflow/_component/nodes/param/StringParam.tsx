@@ -6,7 +6,12 @@ import { useEffect, useId, useState } from "react";
 import { ParamProps } from "@/types/appNode";
 import { Textarea } from "@/components/ui/textarea";
 
-const StringParam = ({ param, value, updateNodeParamValue }: ParamProps) => {
+const StringParam = ({
+  param,
+  value,
+  updateNodeParamValue,
+  disabled,
+}: ParamProps) => {
   const [internalValue, setInternalValue] = useState(value);
 
   useEffect(() => {
@@ -28,9 +33,10 @@ const StringParam = ({ param, value, updateNodeParamValue }: ParamProps) => {
         className=" text-xs"
         id={id}
         value={internalValue}
-        onChange={(e) => setInternalValue(e.target.value)}
+        onChange={(e: any) => setInternalValue(e.target.value)}
         placeholder={param.helperText}
-        onBlur={(e) => updateNodeParamValue(e.target.value)}
+        onBlur={(e: any) => updateNodeParamValue(e.target.value)}
+        disabled={disabled}
       />
     </div>
   );

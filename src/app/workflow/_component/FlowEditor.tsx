@@ -20,6 +20,7 @@ import NodeComponent from "./nodes/NodeComponent";
 import { AppNode } from "@/types/appNode";
 import DeleteableEdge from "./edges/DeleteableEdge";
 import { notDeepEqual } from "assert";
+import { TaskRegister } from "@/lib/workflow/task/register";
 
 const snapGrid: [number, number] = [50, 50];
 const fitViewOptions = { padding: 1 };
@@ -90,6 +91,57 @@ const FlowEditor: React.FC<FlowEditorProps> = ({ workflow }) => {
     [setEdges, updateNodeData, nodes]
   );
 
+  const isValidConnection = useCallback(
+    (connection: Edge | Connection) => {
+      /**
+       *  no self connection
+       *
+       */
+
+      if (connection.source === connection.target) {
+        return false;
+      }
+
+      const sourceNode = nodes.find((node) => node.id === connection.source);
+      const targetNode = nodes.find((node) => node.id === connection.target);
+
+      if (!sourceNode || !targetNode) {
+        console.error("Invalid connection: source or target node not found");
+        return false;
+      }
+
+      const sourceTask = TaskRegister[sourceNode.data.type];
+      const targetTask = TaskRegister[targetNode.data.type];
+
+      if (!sourceTask || !targetTask) {
+        console.error("Task type not registered for source or target node");
+        return false;
+      }
+
+      const sourceOutput = sourceTask.outputs.find(
+        (output) => output.name === connection.sourceHandle
+      );
+      const targetInput = targetTask.inputs.find(
+        (input) => input.name === connection.targetHandle
+      );
+
+      if (!sourceOutput || !targetInput) {
+        console.error("Invalid connection: source or target handle not found");
+        return false;
+      }
+
+      if (sourceOutput.type !== targetInput.type) {
+        console.error(
+          `Type mismatch: source output type (${sourceOutput.type}) does not match target input type (${targetInput.type})`
+        );
+        return false;
+      }
+
+      return true;
+    },
+    [nodes]
+  );
+
   return (
     <main className="w-full h-full">
       <ReactFlow
@@ -101,6 +153,7 @@ const FlowEditor: React.FC<FlowEditorProps> = ({ workflow }) => {
         onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
         nodeTypes={nodeTypes}
+        isValidConnection={isValidConnection}
         fitViewOptions={fitViewOptions}
         onDragOver={onDragOver}
         edgeTypes={edgeTypes}
