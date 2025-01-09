@@ -22,6 +22,7 @@ const TaskMenu = () => {
           </AccordionTrigger>
           <AccordionContent className=" flex flex-col gap-1">
             <TaskMenuBtn taskType={TaskType.PAGE_TO_HTML} />
+            <TaskMenuBtn taskType={TaskType.EXTRACT_TEXT_FROM_ELEMENT} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
@@ -31,10 +32,12 @@ const TaskMenu = () => {
 
 function TaskMenuBtn({ taskType }: { taskType: TaskType }) {
   const task = TaskRegister[taskType];
+
   const onDragStart = (event: any, task: TaskType) => {
     event.dataTransfer.setData("application/reactflow", taskType);
     event.dataTransfer.effectAllowed = "move";
   };
+
   return (
     <Button
       draggable

@@ -18,10 +18,13 @@ import { CreateFlowNode } from "@/lib/workflow/createFlowNode";
 import { TaskType } from "@/types/task";
 import NodeComponent from "./nodes/NodeComponent";
 import { AppNode } from "@/types/appNode";
+import DeleteableEdge from "./edges/DeleteableEdge";
+import { notDeepEqual } from "assert";
 
 const snapGrid: [number, number] = [50, 50];
 const fitViewOptions = { padding: 1 };
 const nodeTypes = { Node: NodeComponent };
+const edgeTypes = { default: DeleteableEdge };
 
 interface FlowEditorProps {
   workflow: WorkFlow;
@@ -30,7 +33,7 @@ interface FlowEditorProps {
 const FlowEditor: React.FC<FlowEditorProps> = ({ workflow }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState<AppNode>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-  const { setViewport, screenToFlowPosition } = useReactFlow();
+  const { setViewport, screenToFlowPosition, updateNodeData } = useReactFlow();
 
   useEffect(() => {
     if (!workflow.definition) return;
@@ -67,9 +70,25 @@ const FlowEditor: React.FC<FlowEditorProps> = ({ workflow }) => {
     setNodes((nds) => nds.concat(newNode));
   }, []);
 
-  const onConnect = useCallback((connection: Connection) => {
-    setEdges((eds) => addEdge({ ...connection }, eds));
-  }, []);
+  const onConnect = useCallback(
+    (connection: Connection) => {
+      setEdges((eds) => addEdge({ ...connection }, eds));
+      if (!connection.targetHandle) return;
+
+      const node = nodes.find((nd) => nd.id === connection.target);
+      if (!node) return;
+
+      const nodeInputs = { ...node.data.inputs };
+      nodeInputs[connection.targetHandle] = connection.source;
+      updateNodeData(node.id, {
+        inputs: {
+          ...nodeInputs,
+          [connection.targetHandle]: "",
+        },
+      });
+    },
+    [setEdges, updateNodeData, nodes]
+  );
 
   return (
     <main className="w-full h-full">
@@ -84,6 +103,7 @@ const FlowEditor: React.FC<FlowEditorProps> = ({ workflow }) => {
         nodeTypes={nodeTypes}
         fitViewOptions={fitViewOptions}
         onDragOver={onDragOver}
+        edgeTypes={edgeTypes}
         onDrop={onDrop}
       >
         <Controls position="top-left" fitViewOptions={fitViewOptions} />
