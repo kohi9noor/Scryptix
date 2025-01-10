@@ -6,7 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { WorkFlowStatus } from "@/types/workflow";
 import {
   FileTextIcon,
-  MoreVertical,
   MoreVerticalIcon,
   PlayIcon,
   ShuffleIcon,
@@ -35,7 +34,7 @@ const statusColors = {
 const WorkflowCard = ({ workflow }: { workflow: WorkFlow }) => {
   const isDraft = workflow.status === WorkFlowStatus.DRAFT;
   return (
-    <Card className=" border border-separate shadow-sm hover:shadow-md h-60 dark:shadow-primary/30 w-full sm:w-[390px] rounded-lg">
+    <Card className=" border border-separate shadow-sm hover:shadow-md h-60 dark:shadow-primary/30 w-full md:flex-1 rounded-lg">
       <CardContent className="p-4 items-center flex justify-between h-[100px]">
         <div className="flex items-center gap-5">
           <div

@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import Editor from "../../_component/Editor";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+  const { id } = await params;
   const { userId } = await auth();
 
   if (!userId || !id) {

@@ -8,6 +8,7 @@ import {
   Connection,
   Controls,
   Edge,
+  getOutgoers,
   ReactFlow,
   useEdgesState,
   useNodesState,
@@ -137,7 +138,20 @@ const FlowEditor: React.FC<FlowEditorProps> = ({ workflow }) => {
         return false;
       }
 
-      return true;
+      const hasCycle = (node: AppNode, visited = new Set()) => {
+        if (visited.has(node.id)) return false;
+
+        visited.add(node.id);
+
+        for (const outgoer of getOutgoers(node, nodes, edges)) {
+          if (outgoer.id === connection.source) return true;
+          if (hasCycle(outgoer, visited)) return true;
+        }
+      };
+
+      const detectedCycle = hasCycle(targetNode);
+
+      return !detectedCycle;
     },
     [nodes]
   );
