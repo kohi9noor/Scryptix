@@ -10,7 +10,7 @@ const DahboardLayout = ({ children }: { children: React.ReactNode }) => {
     <div className=" flex h-screen">
       <DesktopSideBar />
       <div className=" flex flex-col flex-1 min-h-screen">
-        <header className=" flex items-center justify-between px-6 py-4 h-[50px] ">
+        <header className=" flex items-center justify-between px-6 h-[40px] py-2">
           <BreadcrumHeader />
           <div className=" gap-4 flex items-center">
             <ModeToggle />

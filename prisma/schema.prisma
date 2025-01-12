@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,22 +7,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+
 model WorkFlow {
-  id String @id @default(uuid())
-  userId String 
-  name String
+  id          String         @id @default(uuid())
+  userId      String
+  name        String
   description String?
-  definition String
-  status String
+  definition  String
+  status      String
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 
-  updateAt DateTime @updatedAt
+  executions WorkflowExecution[]  
 
   @@unique([name, userId])
 }
 
+model WorkflowExecution {
+  id String @id @default(cuid())
+  workflowId String
+  userId String
+  trigger String
+  status String
+  createdAt DateTime @default(now())
+  startedAt DateTime?
+  completedAt DateTime?
 
+  phase ExecutionPhase[]
 
+  workflow WorkFlow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+}
 
+model ExecutionPhase {
+  id String @id @default(cuid())
+  userId String
+  status String
+  number Int
+  node String
+  name String
+  startedAt DateTime?
+  completedAt DateTime?
+  inputs String?
+  outputs String?
 
+  workflowExecutionId String
+  execution WorkflowExecution @relation(fields: [workflowExecutionId], references: [id], onDelete: Cascade)
+}

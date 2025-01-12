@@ -19,3 +19,8 @@ export interface TaskParam {
   value?: string;
   [key: string]: any;
 }
+
+export type AppNodeMissingInputs = {
+  nodeId: string;
+  inputs: string[];
+};

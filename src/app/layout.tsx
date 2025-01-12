@@ -37,9 +37,9 @@ export default function RootLayout({
     >
       <html lang="en">
         <body className={`${poppines.className} antialiased`}>
+          <Toaster richColors />
           <AppProvider>{children}</AppProvider>
         </body>
-        <Toaster richColors />
       </html>
     </ClerkProvider>
   );
